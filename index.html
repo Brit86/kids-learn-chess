@@ -678,7 +678,7 @@
     var ORDER = ["pawn","rook","knight","bishop","queen","king"];
     var CHARS = {
       pawn:  { name:"Pip",     full:"Pip the Pawn",     tag:"Small but brave!",
-               lines:["Och aye! I am Pip!","I step, step, step.","My first step can be 2!","I take treats on a slant.","I can NOT jump over friends or foes!","Tap me. See where I go!"],
+               lines:["Och aye! I am Pip!","I step, step, step.","I only step forward, never sideways!","My first step can be 2!","I take treats on a slant.","If I reach the other end, I become a Queen!","I can NOT jump over friends or foes!","Tap me. See where I go!"],
                tip:"Tap Pip. Tap a dot to move!" },
       rook:  { name:"Rocky",   full:"Rocky the Rook",   tag:"A strong castle!",
                lines:["Och aye! I am Rocky!","I am a castle.","I go straight. Zoom!","Up, down, left, right.","I can NOT jump over friends or foes!","No slant for me!"],
@@ -1349,12 +1349,15 @@
         if(mover.s === "sun") game.capSun.push(captured); else game.capBerry.push(captured);
         sndCapture();
       } else sndMove();
-      if(landed && landed.promo){
-        confetti(18); sndPop();
-        setGameBubble("Wow! A new Queen!");
-      }
       game.lastFrom = from; game.lastTo = to;
       game.selected = null; game.targets = []; game.hintFrom = game.hintTo = null;
+      if(landed && landed.promo){
+        game.over = true;
+        renderGame();
+        var who = mover.s === "sun" ? "Your pawn" : "Berry's pawn";
+        party("Wow! A new Queen!", who + " walked all the way and became a Queen! What a game!", "queen", "Play Again", function(){ startGame(game.mode); }, "Home", goHome);
+        return;
+      }
       game.turn = game.turn === "sun" ? "berry" : "sun";
       afterMove();
     }
