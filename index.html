@@ -826,13 +826,14 @@
     $("#menuKnight").innerHTML = pieceSVG("knight","sun");
 
     /* ================= chess move logic ================= */
-    function pseudoMoves(board, i, attack){
+    function pseudoMoves(board, i, attack, cookies){
       var p = board[i]; if(!p) return [];
       var pos = rc(i), r = pos[0], c = pos[1], out = [];
       var dir = p.s === "sun" ? -1 : 1;
       function push(rr,cc){
         if(!inB(rr,cc)) return false;
         var t = idx(rr,cc), q = board[t];
+        if(cookies && cookies.has(t)){ out.push(t); return false; }
         if(attack){ out.push(t); return !q; }
         if(!q){ out.push(t); return true; }
         if(q.s !== p.s) out.push(t);
@@ -1197,7 +1198,7 @@
       if(chView.selected === null){
         if(chView.board[i] && chView.board[i].s === "sun"){
           chView.selected = i;
-          chView.targets = t === "pawn" ? raceMoves(chView.board, i) : pseudoMoves(chView.board, i, false);
+          chView.targets = t === "pawn" ? raceMoves(chView.board, i) : pseudoMoves(chView.board, i, false, chView.cookies);
           sndTap();
         }
         renderBoard($("#chBoard"), chView);
