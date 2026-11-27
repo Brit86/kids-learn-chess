@@ -51,3 +51,9 @@ https://brit86.github.io/kids-learn-chess-dev/
 ### v1.0.0 — 22 November 2026
 
 - First release: piece lessons, pawn race, free play, Play the Computer.
+
+## What's next (v1.2.0 wish list)
+
+- Update button (grown-ups): a way to force a fresh copy of the game when a new
+  version is out, so players don't stay on a cached old build. The version
+  number on the home screen confirms which version is running after updating.
